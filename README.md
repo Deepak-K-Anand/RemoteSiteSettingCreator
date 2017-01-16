@@ -11,6 +11,8 @@ So we have two solutions to this problem:
 
 *   **Using the Metadata API from JS**. Instead of using Apex, we would spawn the Metadata API from JavaScript. You will create a *Visualforce Component* that lies on that VF Page that might want to make calls to the Salesforce API. The calls to Salesforce Metadata API from JavaScript will be done via the excellent [jsforce](https://jsforce.github.io/) library.
 
+> This repo explains how we can achieve this using the second method - **Using the Metadata API from JS**.
+
 ##Usage
 In order to use this VF Component, all you have to do is to just include the Component on the VF page:
 
