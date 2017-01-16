@@ -2,7 +2,7 @@
  * Apex Controller for the Visualforce
  * Component - RemoteSiteSettingCreator.
  * 
- * @author      Talent Rover Inc
+ * @author      Deepak K Anand
  * @since       16 Jan 2017
  * @revisions   N/A
  */
