@@ -1,4 +1,4 @@
-#RemoteSiteSettingCreator
+#Remote Site Setting Creator
 Create a Remote Site Setting for the Salesforce API automatically if absent using the Metadata API.
 
 ##Problem
