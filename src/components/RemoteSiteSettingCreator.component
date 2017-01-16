@@ -1,0 +1,83 @@
+<!--Create the Remote Site Setting for Salesforce using Metadata API-->
+<apex:component controller="RemoteSiteSettingCreatorCtrlr">
+    <apex:attribute name="callback" type="string" description="A block of JavaScript that needs to be executed after the successful creation of the Remote Site Setting."></apex:attribute>
+    
+    <!--Refer https://jsforce.github.io/-->
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jsforce/1.7.0/jsforce.min.js"></script>
+    <script type="text/javascript">
+        var RemoteSiteSettingCreator = {
+            constants                   : {
+                /**
+                 * [conn Instantiate the jsforce object with the Session Id.]
+                 * @type {jsforce}
+                 */
+                conn                    : new jsforce.Connection(
+                    {
+                        accessToken     : "{!$API.Session_Id}"
+                    }
+                ),
+                /**
+                 * [sfdcRemoteSiteSetting Metadata Structure for the Remote Site Setting.]
+                 * @type {Object}
+                 */
+                sfdcRemoteSiteSetting   : {
+                    "fullName"                  : "Salesforce_API",
+                    "description"               : "Salesforce API",
+                    "disableProtocolSecurity"   : false,
+                    "isActive"                  : true,
+                    "url"                       : "{!sfdcURL}"
+                },
+                RSS                     : "RemoteSiteSetting"
+            },
+            actions : {
+                /**
+                 * [createSFDCRemoteSiteSetting Create a Remote Site Setting for the Salesforce API.]
+                 */
+                createSFDCRemoteSiteSetting : function() {
+                    var constants = RemoteSiteSettingCreator.constants;
+                    
+                    /**
+                     * Use the Metadata API to create
+                     * the Remote Site Setting.
+                     */
+                    constants.conn.metadata.create(
+                        constants.RSS,
+                        constants.sfdcRemoteSiteSetting,
+                        function( err, results ) {
+                            if( err ) { alert( err ); }
+                            else {
+                                constants.remoteSiteSettingCreated = true;
+                                /**
+                                 * After the creating the Setting
+                                 * check if a callback was defined
+                                 * on the Component and if so
+                                 * fire it.
+                                 */
+                                if( "{!callback}" !== "" ) {
+                                    try {
+                                        eval( "{!callback}" );
+                                    }
+                                    catch( e ){ console.err( e ); }
+                                }
+                            }
+                        }
+                    );
+                }
+            },
+            init : function() {
+                var self = RemoteSiteSettingCreator;
+        
+                /**
+                 * If Salesforce API hasn't been
+                 * registered as a Remote Site
+                 * Setting then create one!.
+                 */
+                if( !{!isSFDCRegistered} ) {
+                    self.actions.createSFDCRemoteSiteSetting();
+                }
+            }
+        };
+        
+        RemoteSiteSettingCreator.init();
+    </script>
+</apex:component>
